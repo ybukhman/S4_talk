@@ -115,7 +115,7 @@
 
 </article></slide><slide class=''><hgroup><h2>Create an object</h2></hgroup><article  id="create-an-object">
 
-<pre class = 'prettyprint lang-r'>mr_hop = new(&quot;Scifi_Character&quot;,
+<pre class = 'prettyprint lang-r'>mr_hop &lt;- new(&quot;Scifi_Character&quot;,
              name = &quot;Mr. Hop&quot;, 
              description = &quot;sencient frog&quot;, 
              mother_ship = &quot;Star Warts&quot;,
@@ -168,14 +168,36 @@
 
 <p>Note: the first argument of the generic print function is <em>x</em></p>
 
-<pre class = 'prettyprint lang-r'>?print
-#&gt; starting httpd help server ... done</pre>
-
 </article></slide><slide class=''><hgroup><h2>Print Mr. Hop using our custom print method</h2></hgroup><article  id="print-mr.-hop-using-our-custom-print-method">
 
 <pre class = 'prettyprint lang-r'>print(mr_hop)</pre>
 
-<p>Mr. Hop is a sencient frog who travels aboard the Star Warts and thinks deep thoughts behind his green face</p></article></slide>
+<p>Mr. Hop is a sencient frog who travels aboard the Star Warts and thinks deep thoughts behind his green face</p>
+
+</article></slide><slide class=''><hgroup><h2>Define name accessors for Scifi_Character</h2></hgroup><article  id="define-name-accessors-for-scifi_character">
+
+<pre class = 'prettyprint lang-r'># Getter
+setGeneric(&quot;name&quot;, function(object) standardGeneric(&quot;name&quot;))
+
+setMethod(&quot;name&quot;, &quot;Scifi_Character&quot;, function(object) object@name)
+
+# Setter
+setGeneric(&quot;name&lt;-&quot;, function(object, value) standardGeneric(&quot;name&lt;-&quot;))
+
+setReplaceMethod(&quot;name&quot;, &quot;Scifi_Character&quot;, 
+                 function(object, value){ 
+                   object@name &lt;- value
+                   object
+                 }
+)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Use name accessors</h2></hgroup><article  id="use-name-accessors">
+
+<pre class = 'prettyprint lang-r'>name(mr_hop)
+#&gt; [1] &quot;Mr. Hop&quot;
+name(mr_hop) &lt;- &quot;Mr. Spock&quot;
+name(mr_hop)
+#&gt; [1] &quot;Mr. Spock&quot;</pre></article></slide>
 
 
   <slide class="backdrop"></slide>

@@ -28,7 +28,7 @@ setClass("Scifi_Character",
 
 ## Create an object
 ```{r Mr. Hop}
-mr_hop = new("Scifi_Character",
+mr_hop <- new("Scifi_Character",
              name = "Mr. Hop", 
              description = "sencient frog", 
              mother_ship = "Star Warts",
@@ -65,5 +65,30 @@ Note: the first argument of the generic print function is _x_
 ## Print Mr. Hop using our custom print method
 ```{r Print Mr. Hop using our custom print method, results='asis'}
 print(mr_hop)
+```
+
+## Define name accessors for Scifi_Character
+```{r Define name accessors for Scifi_Character, results='hide'}
+# Getter
+setGeneric("name", function(object) standardGeneric("name"))
+
+setMethod("name", "Scifi_Character", function(object) object@name)
+
+# Setter
+setGeneric("name<-", function(object, value) standardGeneric("name<-"))
+
+setReplaceMethod("name", "Scifi_Character", 
+                 function(object, value){ 
+                   object@name <- value
+                   object
+                 }
+)
+```
+
+## Use name accessors
+```{r Use name accessors}
+name(mr_hop)
+name(mr_hop) <- "Mr. Spock"
+name(mr_hop)
 ```
 
