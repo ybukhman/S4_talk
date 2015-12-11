@@ -1,0 +1,69 @@
+---
+title: "Introduction to S4"
+author: "Yury V Bukhman"
+date: "December 16, 2015"
+output: ioslides_presentation
+---
+
+## Why S4?
+* Object oriented programming is supposed to be a good thing
+* S4 seems to be the most widely used OOP system in R today
+* Bioconductor project recommends using S4
+
+```{r code output options, echo = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+## A simple class
+Set up a class
+```{r Scifi_Character class}
+setClass("Scifi_Character", 
+         slots = list(name = "character",
+                      description = "character",
+                      mother_ship = "character",
+                      action = "character",
+                      likability = "numeric")
+         )
+```
+
+## Create an object
+```{r Mr. Hop}
+mr_hop = new("Scifi_Character",
+             name = "Mr. Hop", 
+             description = "sencient frog", 
+             mother_ship = "Star Warts",
+             action = "thinks deep thoughts behind his green face",
+             likability = 10)
+```
+
+## Mr Hop
+![alt text](Mr_Hop.jpg)
+
+## Generics and methods
+* S4 system quirk: methods are called from __generic functions__
+* Motivation: make the "same" function do different things depending on the classes of its arguments
+* For example, functions like _print_ or _plot_ can output different things depending on what kind of object they are applied to
+* If a class-specific method is not defined, generic may still work
+* Every method must have a generic
+
+## Print mr_hop using generic print function
+```{r print Mr. Hop}
+print(mr_hop)
+```
+
+## Define print method for class Scifi_Character
+```{r Define print method for class Scifi_Character}
+setMethod("print", signature(x = "Scifi_Character"),
+          function(x) {
+            cat(x@name, "is a", x@description, "who travels aboard the",
+                x@mother_ship, "and", x@action)
+          }
+          )
+```
+Note: the first argument of the generic print function is _x_
+
+## Print Mr. Hop using our custom print method
+```{r Print Mr. Hop using our custom print method, results='asis'}
+print(mr_hop)
+```
+
