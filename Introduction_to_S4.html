@@ -166,13 +166,26 @@
 #&gt; Creating a generic function for &#39;print&#39; from package &#39;base&#39; in the global environment
 #&gt; [1] &quot;print&quot;</pre>
 
-<p>Note: the first argument of the generic print function is <em>x</em></p>
-
 </article></slide><slide class=''><hgroup><h2>Print Mr. Hop using our custom print method</h2></hgroup><article  id="print-mr.-hop-using-our-custom-print-method">
 
 <pre class = 'prettyprint lang-r'>print(mr_hop)</pre>
 
 <p>Mr. Hop is a sencient frog who travels aboard the Star Warts and thinks deep thoughts behind his green face</p>
+
+</article></slide><slide class=''><hgroup><h2>A method&#39;s signature must specify classes of generic&#39;s arguments</h2></hgroup><article  id="a-methods-signature-must-specify-classes-of-generics-arguments">
+
+<p>Generic: <code>print(x, ...)</code><br/>Method:</p>
+
+<pre >setMethod(&quot;print&quot;, signature(x = &quot;Scifi_Character&quot;), 
+          function(x){...}
+         )</pre>
+
+<p>Generic: <code>plot(x, y, ...)</code><br/>Method:</p>
+
+<pre >setMethod(&quot;plot&quot;,
+          signature(x = &quot;DRE&quot;, y=&quot;missing&quot;),
+          function (x, y, ...){...}
+         )</pre>
 
 </article></slide><slide class=''><hgroup><h2>Define name accessors for Scifi_Character</h2></hgroup><article  id="define-name-accessors-for-scifi_character">
 
@@ -197,7 +210,51 @@ setReplaceMethod(&quot;name&quot;, &quot;Scifi_Character&quot;,
 #&gt; [1] &quot;Mr. Hop&quot;
 name(mr_hop) &lt;- &quot;Mr. Spock&quot;
 name(mr_hop)
-#&gt; [1] &quot;Mr. Spock&quot;</pre></article></slide>
+#&gt; [1] &quot;Mr. Spock&quot;</pre>
+
+</article></slide><slide class=''><hgroup><h2>Why do I need to write accessors?</h2></hgroup><article  id="why-do-i-need-to-write-accessors">
+
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="left">Code iteration</th>
+<th align="left">No accessor</th>
+<th align="left">Use accessor</th>
+</tr>
+<tr class="odd">
+<td align="left">1. Store age in a slot</td>
+<td align="left"><code>person@age</code></td>
+<td align="left"><code>age(person)</code></td>
+</tr>
+<tr class="even">
+<td align="left">2. Store DOB instead</td>
+<td align="left">Replace <code>person@age</code> everywhere</td>
+<td align="left">Edit <code>age</code> method only</td>
+</tr>
+</table>
+
+</article></slide><slide class=''><hgroup><h2>But writing accessors is BORING!</h2></hgroup><article  id="but-writing-accessors-is-boring">
+
+<pre class = 'prettyprint lang-r'>distr::standardMethods(&quot;Scifi_Character&quot;)
+#&gt; if(!isGeneric(&quot;name&quot;)) setGeneric(&quot;name&quot;, function(object) standardGeneric(&quot;name&quot;))
+#&gt; if(!isGeneric(&quot;description&quot;)) setGeneric(&quot;description&quot;, function(object) standardGeneric(&quot;description&quot;))
+#&gt; if(!isGeneric(&quot;mother_ship&quot;)) setGeneric(&quot;mother_ship&quot;, function(object) standardGeneric(&quot;mother_ship&quot;))
+#&gt; if(!isGeneric(&quot;action&quot;)) setGeneric(&quot;action&quot;, function(object) standardGeneric(&quot;action&quot;))
+#&gt; if(!isGeneric(&quot;likability&quot;)) setGeneric(&quot;likability&quot;, function(object) standardGeneric(&quot;likability&quot;))
+#&gt; setMethod(&quot;name&quot;, &quot;Scifi_Character&quot;, function(object) object@name)
+#&gt; setMethod(&quot;description&quot;, &quot;Scifi_Character&quot;, function(object) object@description)
+#&gt; setMethod(&quot;mother_ship&quot;, &quot;Scifi_Character&quot;, function(object) object@mother_ship)
+#&gt; setMethod(&quot;action&quot;, &quot;Scifi_Character&quot;, function(object) object@action)
+#&gt; setMethod(&quot;likability&quot;, &quot;Scifi_Character&quot;, function(object) object@likability)
+#&gt; if(!isGeneric(&quot;name&lt;-&quot;)) setGeneric(&quot;name&lt;-&quot;, function(object, value) standardGeneric(&quot;name&lt;-&quot;))
+#&gt; if(!isGeneric(&quot;description&lt;-&quot;)) setGeneric(&quot;description&lt;-&quot;, function(object, value) standardGeneric(&quot;description&lt;-&quot;))
+#&gt; if(!isGeneric(&quot;mother_ship&lt;-&quot;)) setGeneric(&quot;mother_ship&lt;-&quot;, function(object, value) standardGeneric(&quot;mother_ship&lt;-&quot;))
+#&gt; if(!isGeneric(&quot;action&lt;-&quot;)) setGeneric(&quot;action&lt;-&quot;, function(object, value) standardGeneric(&quot;action&lt;-&quot;))
+#&gt; if(!isGeneric(&quot;likability&lt;-&quot;)) setGeneric(&quot;likability&lt;-&quot;, function(object, value) standardGeneric(&quot;likability&lt;-&quot;))
+#&gt; setReplaceMethod(&quot;name&quot;, &quot;Scifi_Character&quot;, function(object, value){ object@name &lt;- value; object})
+#&gt; setReplaceMethod(&quot;description&quot;, &quot;Scifi_Character&quot;, function(object, value){ object@description &lt;- value; object})
+#&gt; setReplaceMethod(&quot;mother_ship&quot;, &quot;Scifi_Character&quot;, function(object, value){ object@mother_ship &lt;- value; object})
+#&gt; setReplaceMethod(&quot;action&quot;, &quot;Scifi_Character&quot;, function(object, value){ object@action &lt;- value; object})
+#&gt; setReplaceMethod(&quot;likability&quot;, &quot;Scifi_Character&quot;, function(object, value){ object@likability &lt;- value; object})</pre></article></slide>
 
 
   <slide class="backdrop"></slide>

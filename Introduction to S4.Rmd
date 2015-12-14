@@ -60,11 +60,28 @@ setMethod("print", signature(x = "Scifi_Character"),
           }
           )
 ```
-Note: the first argument of the generic print function is _x_
 
 ## Print Mr. Hop using our custom print method
 ```{r Print Mr. Hop using our custom print method, results='asis'}
 print(mr_hop)
+```
+
+## A method's signature must specify classes of generic's arguments
+Generic: ```print(x, ...)```   
+Method: 
+```
+setMethod("print", signature(x = "Scifi_Character"), 
+          function(x){...}
+         )
+```
+
+Generic: ```plot(x, y, ...)```   
+Method:
+```
+setMethod("plot",
+          signature(x = "DRE", y="missing"),
+          function (x, y, ...){...}
+         )
 ```
 
 ## Define name accessors for Scifi_Character
@@ -90,5 +107,16 @@ setReplaceMethod("name", "Scifi_Character",
 name(mr_hop)
 name(mr_hop) <- "Mr. Spock"
 name(mr_hop)
+```
+
+## Why do I need to write accessors?
+Code iteration        |No accessor                    |Use accessor
+----------------------|------------------------------ |----------------------
+1. Store age in a slot|`person@age`                   |`age(person)`
+2. Store DOB instead  |Replace `person@age` everywhere|Edit `age` method only
+
+## But writing accessors is BORING!
+```{r But writing accessors is BORING!}
+distr::standardMethods("Scifi_Character")
 ```
 
