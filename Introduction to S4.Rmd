@@ -20,7 +20,7 @@ Set up a class
 setClass("Scifi_Character", 
          slots = list(name = "character",
                       description = "character",
-                      mother_ship = "character",
+                      starship = "character",
                       action = "character",
                       likability = "numeric")
          )
@@ -30,8 +30,8 @@ setClass("Scifi_Character",
 ```{r Mr. Hop}
 mr_hop <- new("Scifi_Character",
              name = "Mr. Hop", 
-             description = "sencient frog", 
-             mother_ship = "Star Warts",
+             description = "sapient frog", 
+             starship = "Star Warts",
              action = "thinks deep thoughts behind his green face",
              likability = 10)
 ```
@@ -56,7 +56,7 @@ print(mr_hop)
 setMethod("print", signature(x = "Scifi_Character"),
           function(x) {
             cat(x@name, "is a", x@description, "who travels aboard the",
-                x@mother_ship, "and", x@action)
+                x@starship, "and", x@action)
           }
           )
 ```
@@ -118,5 +118,27 @@ Code iteration        |No accessor                    |Use accessor
 ## But writing accessors is BORING!
 ```{r But writing accessors is BORING!}
 distr::standardMethods("Scifi_Character")
+```
+
+## Inheritance
+```{r Inheritance}
+setClass("Robot", contains = "Scifi_Character",
+         slots = list(designer = "character")
+)
+```
+## Commander Data
+```{r Commander Data}
+cmdr_data <- new("Robot",
+                 name = "Commander Data", 
+                 description = "sentient android", 
+                 starship = "Enterprize",
+                 action = "wonders if there's anything to write home about",
+                 likability = 10,
+                 designer = "Doctor Noonien Soong")
+```
+
+## Print Commander Data
+```{r Print Commander Data using our custom print method, results='asis'}
+print(cmdr_data)
 ```
 

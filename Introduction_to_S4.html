@@ -108,7 +108,7 @@
 <pre class = 'prettyprint lang-r'>setClass(&quot;Scifi_Character&quot;, 
          slots = list(name = &quot;character&quot;,
                       description = &quot;character&quot;,
-                      mother_ship = &quot;character&quot;,
+                      starship = &quot;character&quot;,
                       action = &quot;character&quot;,
                       likability = &quot;numeric&quot;)
          )</pre>
@@ -117,8 +117,8 @@
 
 <pre class = 'prettyprint lang-r'>mr_hop &lt;- new(&quot;Scifi_Character&quot;,
              name = &quot;Mr. Hop&quot;, 
-             description = &quot;sencient frog&quot;, 
-             mother_ship = &quot;Star Warts&quot;,
+             description = &quot;intelligent frog&quot;, 
+             starship = &quot;Star Warts&quot;,
              action = &quot;thinks deep thoughts behind his green face&quot;,
              likability = 10)</pre>
 
@@ -144,9 +144,9 @@
 #&gt; [1] &quot;Mr. Hop&quot;
 #&gt; 
 #&gt; Slot &quot;description&quot;:
-#&gt; [1] &quot;sencient frog&quot;
+#&gt; [1] &quot;intelligent frog&quot;
 #&gt; 
-#&gt; Slot &quot;mother_ship&quot;:
+#&gt; Slot &quot;starship&quot;:
 #&gt; [1] &quot;Star Warts&quot;
 #&gt; 
 #&gt; Slot &quot;action&quot;:
@@ -160,7 +160,7 @@
 <pre class = 'prettyprint lang-r'>setMethod(&quot;print&quot;, signature(x = &quot;Scifi_Character&quot;),
           function(x) {
             cat(x@name, &quot;is a&quot;, x@description, &quot;who travels aboard the&quot;,
-                x@mother_ship, &quot;and&quot;, x@action)
+                x@starship, &quot;and&quot;, x@action)
           }
           )
 #&gt; Creating a generic function for &#39;print&#39; from package &#39;base&#39; in the global environment
@@ -170,7 +170,7 @@
 
 <pre class = 'prettyprint lang-r'>print(mr_hop)</pre>
 
-<p>Mr. Hop is a sencient frog who travels aboard the Star Warts and thinks deep thoughts behind his green face</p>
+<p>Mr. Hop is a intelligent frog who travels aboard the Star Warts and thinks deep thoughts behind his green face</p>
 
 </article></slide><slide class=''><hgroup><h2>A method&#39;s signature must specify classes of generic&#39;s arguments</h2></hgroup><article  id="a-methods-signature-must-specify-classes-of-generics-arguments">
 
@@ -237,24 +237,46 @@ name(mr_hop)
 <pre class = 'prettyprint lang-r'>distr::standardMethods(&quot;Scifi_Character&quot;)
 #&gt; if(!isGeneric(&quot;name&quot;)) setGeneric(&quot;name&quot;, function(object) standardGeneric(&quot;name&quot;))
 #&gt; if(!isGeneric(&quot;description&quot;)) setGeneric(&quot;description&quot;, function(object) standardGeneric(&quot;description&quot;))
-#&gt; if(!isGeneric(&quot;mother_ship&quot;)) setGeneric(&quot;mother_ship&quot;, function(object) standardGeneric(&quot;mother_ship&quot;))
+#&gt; if(!isGeneric(&quot;starship&quot;)) setGeneric(&quot;starship&quot;, function(object) standardGeneric(&quot;starship&quot;))
 #&gt; if(!isGeneric(&quot;action&quot;)) setGeneric(&quot;action&quot;, function(object) standardGeneric(&quot;action&quot;))
 #&gt; if(!isGeneric(&quot;likability&quot;)) setGeneric(&quot;likability&quot;, function(object) standardGeneric(&quot;likability&quot;))
 #&gt; setMethod(&quot;name&quot;, &quot;Scifi_Character&quot;, function(object) object@name)
 #&gt; setMethod(&quot;description&quot;, &quot;Scifi_Character&quot;, function(object) object@description)
-#&gt; setMethod(&quot;mother_ship&quot;, &quot;Scifi_Character&quot;, function(object) object@mother_ship)
+#&gt; setMethod(&quot;starship&quot;, &quot;Scifi_Character&quot;, function(object) object@starship)
 #&gt; setMethod(&quot;action&quot;, &quot;Scifi_Character&quot;, function(object) object@action)
 #&gt; setMethod(&quot;likability&quot;, &quot;Scifi_Character&quot;, function(object) object@likability)
 #&gt; if(!isGeneric(&quot;name&lt;-&quot;)) setGeneric(&quot;name&lt;-&quot;, function(object, value) standardGeneric(&quot;name&lt;-&quot;))
 #&gt; if(!isGeneric(&quot;description&lt;-&quot;)) setGeneric(&quot;description&lt;-&quot;, function(object, value) standardGeneric(&quot;description&lt;-&quot;))
-#&gt; if(!isGeneric(&quot;mother_ship&lt;-&quot;)) setGeneric(&quot;mother_ship&lt;-&quot;, function(object, value) standardGeneric(&quot;mother_ship&lt;-&quot;))
+#&gt; if(!isGeneric(&quot;starship&lt;-&quot;)) setGeneric(&quot;starship&lt;-&quot;, function(object, value) standardGeneric(&quot;starship&lt;-&quot;))
 #&gt; if(!isGeneric(&quot;action&lt;-&quot;)) setGeneric(&quot;action&lt;-&quot;, function(object, value) standardGeneric(&quot;action&lt;-&quot;))
 #&gt; if(!isGeneric(&quot;likability&lt;-&quot;)) setGeneric(&quot;likability&lt;-&quot;, function(object, value) standardGeneric(&quot;likability&lt;-&quot;))
 #&gt; setReplaceMethod(&quot;name&quot;, &quot;Scifi_Character&quot;, function(object, value){ object@name &lt;- value; object})
 #&gt; setReplaceMethod(&quot;description&quot;, &quot;Scifi_Character&quot;, function(object, value){ object@description &lt;- value; object})
-#&gt; setReplaceMethod(&quot;mother_ship&quot;, &quot;Scifi_Character&quot;, function(object, value){ object@mother_ship &lt;- value; object})
+#&gt; setReplaceMethod(&quot;starship&quot;, &quot;Scifi_Character&quot;, function(object, value){ object@starship &lt;- value; object})
 #&gt; setReplaceMethod(&quot;action&quot;, &quot;Scifi_Character&quot;, function(object, value){ object@action &lt;- value; object})
-#&gt; setReplaceMethod(&quot;likability&quot;, &quot;Scifi_Character&quot;, function(object, value){ object@likability &lt;- value; object})</pre></article></slide>
+#&gt; setReplaceMethod(&quot;likability&quot;, &quot;Scifi_Character&quot;, function(object, value){ object@likability &lt;- value; object})</pre>
+
+</article></slide><slide class=''><hgroup><h2>Inheritance</h2></hgroup><article  id="inheritance">
+
+<pre class = 'prettyprint lang-r'>setClass(&quot;Robot&quot;, contains = &quot;Scifi_Character&quot;,
+         slots = list(designer = &quot;character&quot;)
+)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Commander Data</h2></hgroup><article  id="commander-data">
+
+<pre class = 'prettyprint lang-r'>cmdr_data &lt;- new(&quot;Robot&quot;,
+                 name = &quot;Commander Data&quot;, 
+                 description = &quot;sentient android&quot;, 
+                 starship = &quot;Enterprize&quot;,
+                 action = &quot;wonders if there&#39;s anything to write home about&quot;,
+                 likability = 10,
+                 designer = &quot;Doctor Noonien Soong&quot;)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Print Commander Data</h2></hgroup><article  id="print-commander-data">
+
+<pre class = 'prettyprint lang-r'>print(cmdr_data)</pre>
+
+<p>Commander Data is a sentient android who travels aboard the Enterprize and wonders if there&#39;s anything to write home about</p></article></slide>
 
 
   <slide class="backdrop"></slide>
