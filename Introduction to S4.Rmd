@@ -14,6 +14,15 @@ output: ioslides_presentation
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 
+## Summary
+* Define a simple class
+* Define a method
+* Accessor methods
+* Inheritance
+* Creating specialized data frame and list classes in S4
+* S4 classes in packages
+* Documenting S4 classes
+
 ## A simple class
 Set up a class
 ```{r Scifi_Character class}
@@ -79,9 +88,28 @@ Generic: ```plot(x, y, ...)```
 Method:
 ```
 setMethod("plot",
-          signature(x = "DRE", y="missing"),
+          signature(x = "Scifi_Character", y="missing"),
           function (x, y, ...){...}
          )
+```
+## What is the class of my object?
+```{r What is the class of my object?}
+# What is the class of my object?
+class(mr_hop)
+
+# Is my object of class "Scifi_character"?
+is(mr_hop, "Scifi_character")
+
+# Coerce my object to class "Scifi_character"
+hop2 <- as(mr_hop, "Scifi_Character")
+
+# What classes is the print method defined for?
+showMethods("print")
+```
+
+## What classes have a print method?
+```{r What classes have a print method?}
+showMethods("print")
 ```
 
 ## Define name accessors for Scifi_Character
@@ -173,6 +201,7 @@ setClass("Characters_df", contains = "data.frame",
            }
          }
 )
+# Need this because as() does not check validity by default
 setAs("data.frame", "Characters_df",
       function(from) {
         new("Characters_df",from)
@@ -181,14 +210,43 @@ setAs("data.frame", "Characters_df",
 
 ## Validity checking example
 ```{r A data frame of Scifi Characters, error=TRUE, purl=FALSE}
-scifi_chars = data.frame(name = c("Mr. Hop", "Commander Data", "Darth Vader"),
-                         description = c("sapient frog","android","evil lord"),
-                         starship = c("Star Warts", "Enterprise", "Death Star"),
-                         likability = c(10,10,0)
+scifi_chars = data.frame(name = c("Mr. Hop", 
+                                  "Commander Data", 
+                                  "Darth Vader"),
+                         description = c("sapient frog",
+                                         "android",
+                                         "evil lord"),
+                         starship = c("Star Warts", 
+                                      "Enterprise", 
+                                      "Death Star"),
+                         action = c("thinks deep thoughts",
+                                    "wonders what to write home about",
+                                    "blows up innocent planets")
                          )
 as(scifi_chars,"Characters_df")
 ```
-(The error was thrown because we forgot to include the action column)
+(The error was thrown because we forgot to include the all-important `likability` column)
+
+## Create an S4 class for lists
+Do this to make sure all list members are of the same class
+```{r Create an S4 class for lists}
+setClass("Scifi_Character_List", contains="list", 
+         validity=function(object) { 
+           checks = sapply(object, is, "Scifi_Character")
+           if(!all(checks)) {
+             return(paste("The following elements are not of class Scifi_Character:",paste(object[!checks],collapse="; ")))
+           }
+           #  All done
+           return(TRUE)
+         }
+)
+# Need this because as() does not check validity by default
+setAs("list", "Scifi_Character_List",
+      function(from) {
+        new("Scifi_Character_List",from)
+      })
+```
+
 
 ## Organize classes and methods in a package
 * Organize methods by class?
@@ -199,4 +257,44 @@ as(scifi_chars,"Characters_df")
 * All generic function definitions in R/AllGenerics.R
 * Methods are defined in a file named by the generic function. For example, all show methods would go in R/show-methods.R.
 
+## Collation
+* R needs to load a package's files in a certain order, 
+e.g. to define a generic and a class before a method
+* This is specified by `Collate` field in `DESCRIPTION`
+* Use roxygen2 to generate the `Collate` field
+    + use @include tag
+    + check box in RStudio project options
+
 ## Document classes and methods with roxygen2
+Document Scifi_character class
+```{r Document Scifi_character class}
+#### Scifi_character class ####
+#' An S4 class to represent a scifi character
+#' 
+#' @slot name character name
+```
+Document the print method
+```{r Document print method}
+#' Print a Scifi_character object
+#' 
+#' Prints a signle sentense describing the object
+#' 
+#' @param x object of class Scifi_character
+#'
+#' @seealso \code{\linkS4class{Scifi_character}}, \code{\link[base]{print}}
+```
+
+## Document multiple methods together
+* Document several methods in one help page
+* Append method documentation to generic or to class
+
+Use `@describeIn` or `@rdname` tags
+
+## Summary
+* Define a simple class
+* Define a method
+* Accessor methods
+* Inheritance
+* Creating specialized data frame and list classes in S4
+* S4 classes in packages
+* Documenting S4 classes

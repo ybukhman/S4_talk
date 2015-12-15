@@ -101,6 +101,18 @@
 <li>Bioconductor project recommends using S4</li>
 </ul>
 
+</article></slide><slide class=''><hgroup><h2>Summary</h2></hgroup><article  id="summary">
+
+<ul>
+<li>Define a simple class</li>
+<li>Define a method</li>
+<li>Accessor methods</li>
+<li>Inheritance</li>
+<li>Creating specialized data frame and list classes in S4</li>
+<li>S4 classes in packages</li>
+<li>Documenting S4 classes</li>
+</ul>
+
 </article></slide><slide class=''><hgroup><h2>A simple class</h2></hgroup><article  id="a-simple-class">
 
 <p>Set up a class</p>
@@ -183,9 +195,37 @@
 <p>Generic: <code>plot(x, y, ...)</code><br/>Method:</p>
 
 <pre >setMethod(&quot;plot&quot;,
-          signature(x = &quot;DRE&quot;, y=&quot;missing&quot;),
+          signature(x = &quot;Scifi_Character&quot;, y=&quot;missing&quot;),
           function (x, y, ...){...}
          )</pre>
+
+</article></slide><slide class=''><hgroup><h2>What is the class of my object?</h2></hgroup><article  id="what-is-the-class-of-my-object">
+
+<pre class = 'prettyprint lang-r'># What is the class of my object?
+class(mr_hop)
+#&gt; [1] &quot;Scifi_Character&quot;
+#&gt; attr(,&quot;package&quot;)
+#&gt; [1] &quot;.GlobalEnv&quot;
+
+# Is my object of class &quot;Scifi_character&quot;?
+is(mr_hop, &quot;Scifi_character&quot;)
+#&gt; [1] FALSE
+
+# Coerce my object to class &quot;Scifi_character&quot;
+hop2 &lt;- as(mr_hop, &quot;Scifi_Character&quot;)
+
+# What classes is the print method defined for?
+showMethods(&quot;print&quot;)
+#&gt; Function: print (package base)
+#&gt; x=&quot;ANY&quot;
+#&gt; x=&quot;Scifi_Character&quot;</pre>
+
+</article></slide><slide class=''><hgroup><h2>What classes have a print method?</h2></hgroup><article  id="what-classes-have-a-print-method">
+
+<pre class = 'prettyprint lang-r'>showMethods(&quot;print&quot;)
+#&gt; Function: print (package base)
+#&gt; x=&quot;ANY&quot;
+#&gt; x=&quot;Scifi_Character&quot;</pre>
 
 </article></slide><slide class=''><hgroup><h2>Define name accessors for Scifi_Character</h2></hgroup><article  id="define-name-accessors-for-scifi_character">
 
@@ -311,6 +351,7 @@ name(mr_hop)
            }
          }
 )
+# Need this because as() does not check validity by default
 setAs(&quot;data.frame&quot;, &quot;Characters_df&quot;,
       function(from) {
         new(&quot;Characters_df&quot;,from)
@@ -318,15 +359,43 @@ setAs(&quot;data.frame&quot;, &quot;Characters_df&quot;,
 
 </article></slide><slide class=''><hgroup><h2>Validity checking example</h2></hgroup><article  id="validity-checking-example">
 
-<pre class = 'prettyprint lang-r'>scifi_chars = data.frame(name = c(&quot;Mr. Hop&quot;, &quot;Commander Data&quot;, &quot;Darth Vader&quot;),
-                         description = c(&quot;sapient frog&quot;,&quot;android&quot;,&quot;evil lord&quot;),
-                         starship = c(&quot;Star Warts&quot;, &quot;Enterprise&quot;, &quot;Death Star&quot;),
-                         likability = c(10,10,0)
+<pre class = 'prettyprint lang-r'>scifi_chars = data.frame(name = c(&quot;Mr. Hop&quot;, 
+                                  &quot;Commander Data&quot;, 
+                                  &quot;Darth Vader&quot;),
+                         description = c(&quot;sapient frog&quot;,
+                                         &quot;android&quot;,
+                                         &quot;evil lord&quot;),
+                         starship = c(&quot;Star Warts&quot;, 
+                                      &quot;Enterprise&quot;, 
+                                      &quot;Death Star&quot;),
+                         action = c(&quot;thinks deep thoughts&quot;,
+                                    &quot;wonders what to write home about&quot;,
+                                    &quot;blows up innocent planets&quot;)
                          )
 as(scifi_chars,&quot;Characters_df&quot;)
 #&gt; Error in validObject(.Object): invalid class &quot;Characters_df&quot; object: object does not have required columns</pre>
 
-<p>(The error was thrown because we forgot to include the action column)</p>
+<p>(The error was thrown because we forgot to include the all-important <code>likability</code> column)</p>
+
+</article></slide><slide class=''><hgroup><h2>Create an S4 class for lists</h2></hgroup><article  id="create-an-s4-class-for-lists">
+
+<p>Do this to make sure all list members are of the same class</p>
+
+<pre class = 'prettyprint lang-r'>setClass(&quot;Scifi_Character_List&quot;, contains=&quot;list&quot;, 
+         validity=function(object) { 
+           checks = sapply(object, is, &quot;Scifi_Character&quot;)
+           if(!all(checks)) {
+             return(paste(&quot;The following elements are not of class Scifi_Character:&quot;,paste(object[!checks],collapse=&quot;; &quot;)))
+           }
+           #  All done
+           return(TRUE)
+         }
+)
+# Need this because as() does not check validity by default
+setAs(&quot;list&quot;, &quot;Scifi_Character_List&quot;,
+      function(from) {
+        new(&quot;Scifi_Character_List&quot;,from)
+      })</pre>
 
 </article></slide><slide class=''><hgroup><h2>Organize classes and methods in a package</h2></hgroup><article  id="organize-classes-and-methods-in-a-package">
 
@@ -343,7 +412,58 @@ as(scifi_chars,&quot;Characters_df&quot;)
 <li>Methods are defined in a file named by the generic function. For example, all show methods would go in R/show-methods.R.</li>
 </ul>
 
-</article></slide><slide class=''><hgroup><h2>Document classes and methods with roxygen2</h2></hgroup><article  id="document-classes-and-methods-with-roxygen2"></article></slide>
+</article></slide><slide class=''><hgroup><h2>Collation</h2></hgroup><article  id="collation">
+
+<ul>
+<li>R needs to load a package&#39;s files in a certain order, e.g. to define a generic and a class before a method</li>
+<li>This is specified by <code>Collate</code> field in <code>DESCRIPTION</code></li>
+<li>Use roxygen2 to generate the <code>Collate</code> field
+
+<ul>
+<li>use <span class="cite">@include</span> tag</li>
+<li>check box in RStudio project options</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Document classes and methods with roxygen2</h2></hgroup><article  id="document-classes-and-methods-with-roxygen2">
+
+<p>Document Scifi_character class</p>
+
+<pre class = 'prettyprint lang-r'>#### Scifi_character class ####
+#&#39; An S4 class to represent a scifi character
+#&#39; 
+#&#39; @slot name character name</pre>
+
+<p>Document the print method</p>
+
+<pre class = 'prettyprint lang-r'>#&#39; Print a Scifi_character object
+#&#39; 
+#&#39; Prints a signle sentense describing the object
+#&#39; 
+#&#39; @param x object of class Scifi_character
+#&#39;
+#&#39; @seealso \code{\linkS4class{Scifi_character}}, \code{\link[base]{print}}</pre>
+
+</article></slide><slide class=''><hgroup><h2>Document multiple methods together</h2></hgroup><article  id="document-multiple-methods-together">
+
+<ul>
+<li>Document several methods in one help page</li>
+<li>Append method documentation to generic or to class</li>
+</ul>
+
+<p>Use <code>@describeIn</code> or <code>@rdname</code> tags</p>
+
+</article></slide><slide class=''><hgroup><h2>Summary</h2></hgroup><article  id="summary-1">
+
+<ul>
+<li>Define a simple class</li>
+<li>Define a method</li>
+<li>Accessor methods</li>
+<li>Inheritance</li>
+<li>Creating specialized data frame and list classes in S4</li>
+<li>S4 classes in packages</li>
+<li>Documenting S4 classes</li>
+</ul></article></slide>
 
 
   <slide class="backdrop"></slide>
