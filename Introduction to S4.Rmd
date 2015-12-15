@@ -131,7 +131,7 @@ setClass("Robot", contains = "Scifi_Character",
 cmdr_data <- new("Robot",
                  name = "Commander Data", 
                  description = "sentient android", 
-                 starship = "Enterprize",
+                 starship = "Enterprise",
                  action = "wonders if there's anything to write home about",
                  likability = 10,
                  designer = "Doctor Noonien Soong")
@@ -156,6 +156,39 @@ setMethod("print", signature(x = "Robot"),
 ```{r Print Commander Data using our new Robot method, results='asis'}
 print(cmdr_data)
 ```
+
+## Create an S4 class for data frames
+S4 advantage: validity checking
+```{r Create an S4 class for data.frames}
+setClass("Characters_df", contains = "data.frame",
+         validity = function(object) {
+           required_cols = c("name","description","starship",
+                             "action","likability")
+           if (!identical(names(object), required_cols)) {
+             return("object does not have required columns")
+           } else if (!is.numeric(object$likability)) {
+             return("likability column must be numeric")
+           } else {
+             return(TRUE)
+           }
+         }
+)
+setAs("data.frame", "Characters_df",
+      function(from) {
+        new("Characters_df",from)
+      })
+```
+
+## Validity checking example
+```{r A data frame of Scifi Characters, error=TRUE, purl=FALSE}
+scifi_chars = data.frame(name = c("Mr. Hop", "Commander Data", "Darth Vader"),
+                         description = c("sapient frog","android","evil lord"),
+                         starship = c("Star Warts", "Enterprise", "Death Star"),
+                         likability = c(10,10,0)
+                         )
+as(scifi_chars,"Characters_df")
+```
+(The error was thrown because we forgot to include the action column)
 
 ## Organize classes and methods in a package
 * Organize methods by class?

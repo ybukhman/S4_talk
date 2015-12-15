@@ -267,7 +267,7 @@ name(mr_hop)
 <pre class = 'prettyprint lang-r'>cmdr_data &lt;- new(&quot;Robot&quot;,
                  name = &quot;Commander Data&quot;, 
                  description = &quot;sentient android&quot;, 
-                 starship = &quot;Enterprize&quot;,
+                 starship = &quot;Enterprise&quot;,
                  action = &quot;wonders if there&#39;s anything to write home about&quot;,
                  likability = 10,
                  designer = &quot;Doctor Noonien Soong&quot;)</pre>
@@ -276,7 +276,7 @@ name(mr_hop)
 
 <pre class = 'prettyprint lang-r'>print(cmdr_data)</pre>
 
-<p>Commander Data is a sentient android who travels aboard the Enterprize and wonders if there&#39;s anything to write home about</p>
+<p>Commander Data is a sentient android who travels aboard the Enterprise and wonders if there&#39;s anything to write home about</p>
 
 </article></slide><slide class=''><hgroup><h2>Define print method for class Robot</h2></hgroup><article  id="define-print-method-for-class-robot">
 
@@ -292,7 +292,58 @@ name(mr_hop)
 
 <pre class = 'prettyprint lang-r'>print(cmdr_data)</pre>
 
-<p>Commander Data is a sentient android who travels aboard the Enterprize and wonders if there&#39;s anything to write home about. Commander Data was designed by Doctor Noonien Soong</p></article></slide>
+<p>Commander Data is a sentient android who travels aboard the Enterprise and wonders if there&#39;s anything to write home about. Commander Data was designed by Doctor Noonien Soong</p>
+
+</article></slide><slide class=''><hgroup><h2>Create an S4 class for data frames</h2></hgroup><article  id="create-an-s4-class-for-data-frames">
+
+<p>S4 advantage: validity checking</p>
+
+<pre class = 'prettyprint lang-r'>setClass(&quot;Characters_df&quot;, contains = &quot;data.frame&quot;,
+         validity = function(object) {
+           required_cols = c(&quot;name&quot;,&quot;description&quot;,&quot;starship&quot;,
+                             &quot;action&quot;,&quot;likability&quot;)
+           if (!identical(names(object), required_cols)) {
+             return(&quot;object does not have required columns&quot;)
+           } else if (!is.numeric(object$likability)) {
+             return(&quot;likability column must be numeric&quot;)
+           } else {
+             return(TRUE)
+           }
+         }
+)
+setAs(&quot;data.frame&quot;, &quot;Characters_df&quot;,
+      function(from) {
+        new(&quot;Characters_df&quot;,from)
+      })</pre>
+
+</article></slide><slide class=''><hgroup><h2>Validity checking example</h2></hgroup><article  id="validity-checking-example">
+
+<pre class = 'prettyprint lang-r'>scifi_chars = data.frame(name = c(&quot;Mr. Hop&quot;, &quot;Commander Data&quot;, &quot;Darth Vader&quot;),
+                         description = c(&quot;sapient frog&quot;,&quot;android&quot;,&quot;evil lord&quot;),
+                         starship = c(&quot;Star Warts&quot;, &quot;Enterprise&quot;, &quot;Death Star&quot;),
+                         likability = c(10,10,0)
+                         )
+as(scifi_chars,&quot;Characters_df&quot;)
+#&gt; Error in validObject(.Object): invalid class &quot;Characters_df&quot; object: object does not have required columns</pre>
+
+<p>(The error was thrown because we forgot to include the action column)</p>
+
+</article></slide><slide class=''><hgroup><h2>Organize classes and methods in a package</h2></hgroup><article  id="organize-classes-and-methods-in-a-package">
+
+<ul>
+<li>Organize methods by class?</li>
+<li>Organize methods by generic?</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Bioconductor guidance</h2></hgroup><article  id="bioconductor-guidance">
+
+<ul>
+<li>All class definitions in R/AllClasses.R</li>
+<li>All generic function definitions in R/AllGenerics.R</li>
+<li>Methods are defined in a file named by the generic function. For example, all show methods would go in R/show-methods.R.</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Document classes and methods with roxygen2</h2></hgroup><article  id="document-classes-and-methods-with-roxygen2"></article></slide>
 
 
   <slide class="backdrop"></slide>
