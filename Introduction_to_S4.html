@@ -117,7 +117,7 @@
 
 <pre class = 'prettyprint lang-r'>mr_hop &lt;- new(&quot;Scifi_Character&quot;,
              name = &quot;Mr. Hop&quot;, 
-             description = &quot;intelligent frog&quot;, 
+             description = &quot;sapient frog&quot;, 
              starship = &quot;Star Warts&quot;,
              action = &quot;thinks deep thoughts behind his green face&quot;,
              likability = 10)</pre>
@@ -144,7 +144,7 @@
 #&gt; [1] &quot;Mr. Hop&quot;
 #&gt; 
 #&gt; Slot &quot;description&quot;:
-#&gt; [1] &quot;intelligent frog&quot;
+#&gt; [1] &quot;sapient frog&quot;
 #&gt; 
 #&gt; Slot &quot;starship&quot;:
 #&gt; [1] &quot;Star Warts&quot;
@@ -170,7 +170,7 @@
 
 <pre class = 'prettyprint lang-r'>print(mr_hop)</pre>
 
-<p>Mr. Hop is a intelligent frog who travels aboard the Star Warts and thinks deep thoughts behind his green face</p>
+<p>Mr. Hop is a sapient frog who travels aboard the Star Warts and thinks deep thoughts behind his green face</p>
 
 </article></slide><slide class=''><hgroup><h2>A method&#39;s signature must specify classes of generic&#39;s arguments</h2></hgroup><article  id="a-methods-signature-must-specify-classes-of-generics-arguments">
 
@@ -276,7 +276,23 @@ name(mr_hop)
 
 <pre class = 'prettyprint lang-r'>print(cmdr_data)</pre>
 
-<p>Commander Data is a sentient android who travels aboard the Enterprize and wonders if there&#39;s anything to write home about</p></article></slide>
+<p>Commander Data is a sentient android who travels aboard the Enterprize and wonders if there&#39;s anything to write home about</p>
+
+</article></slide><slide class=''><hgroup><h2>Define print method for class Robot</h2></hgroup><article  id="define-print-method-for-class-robot">
+
+<pre class = 'prettyprint lang-r'>setMethod(&quot;print&quot;, signature(x = &quot;Robot&quot;),
+          function(x) {
+            callNextMethod()
+            cat(&quot;.&quot;, x@name, &quot;was designed by&quot;, x@designer)
+          }
+          )
+#&gt; [1] &quot;print&quot;</pre>
+
+</article></slide><slide class=''><hgroup><h2>Print Commander Data using our new Robot method</h2></hgroup><article  id="print-commander-data-using-our-new-robot-method">
+
+<pre class = 'prettyprint lang-r'>print(cmdr_data)</pre>
+
+<p>Commander Data is a sentient android who travels aboard the Enterprize and wonders if there&#39;s anything to write home about. Commander Data was designed by Doctor Noonien Soong</p></article></slide>
 
 
   <slide class="backdrop"></slide>

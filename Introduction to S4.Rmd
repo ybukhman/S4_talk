@@ -138,7 +138,32 @@ cmdr_data <- new("Robot",
 ```
 
 ## Print Commander Data
-```{r Print Commander Data using our custom print method, results='asis'}
+```{r Print Commander Data, results='asis'}
 print(cmdr_data)
 ```
 
+## Define print method for class Robot
+```{r Define print method for class Robot}
+setMethod("print", signature(x = "Robot"),
+          function(x) {
+            callNextMethod()
+            cat(".", x@name, "was designed by", x@designer)
+          }
+          )
+```
+
+## Print Commander Data using our new Robot method
+```{r Print Commander Data using our new Robot method, results='asis'}
+print(cmdr_data)
+```
+
+## Organize classes and methods in a package
+* Organize methods by class?
+* Organize methods by generic?
+
+## Bioconductor guidance
+* All class definitions in R/AllClasses.R
+* All generic function definitions in R/AllGenerics.R
+* Methods are defined in a file named by the generic function. For example, all show methods would go in R/show-methods.R.
+
+## Document classes and methods with roxygen2
