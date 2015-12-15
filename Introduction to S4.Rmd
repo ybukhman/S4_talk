@@ -15,8 +15,8 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 
 ## Summary
-* Define a simple class
-* Define a method
+* __Define a simple class__
+* Defining methods
 * Accessor methods
 * Inheritance
 * Creating specialized data frame and list classes in S4
@@ -48,10 +48,31 @@ mr_hop <- new("Scifi_Character",
 ## Mr Hop
 ![alt text](Mr_Hop.jpg)
 
+## What is the class of my object?
+```{r What is the class of my object?}
+# What is the class of my object?
+class(mr_hop)
+
+# Is my object of class "Scifi_Character"?
+is(mr_hop, "Scifi_Character")
+
+# Coerce my object to class "Scifi_Character"
+hop2 <- as(mr_hop, "Scifi_Character")
+```
+
+## Summary
+* Define a simple class
+* __Defining methods__
+* Accessor methods
+* Inheritance
+* Creating specialized data frame and list classes in S4
+* S4 classes in packages
+* Documenting S4 classes
+
 ## Generics and methods
 * S4 system quirk: methods are called from __generic functions__
 * Motivation: make the "same" function do different things depending on the classes of its arguments
-* For example, functions like _print_ or _plot_ can output different things depending on what kind of object they are applied to
+* For example, functions like `print` or `plot` can output different things depending on what kind of object they are applied to
 * If a class-specific method is not defined, generic may still work
 * Every method must have a generic
 
@@ -92,25 +113,20 @@ setMethod("plot",
           function (x, y, ...){...}
          )
 ```
-## What is the class of my object?
-```{r What is the class of my object?}
-# What is the class of my object?
-class(mr_hop)
-
-# Is my object of class "Scifi_character"?
-is(mr_hop, "Scifi_character")
-
-# Coerce my object to class "Scifi_character"
-hop2 <- as(mr_hop, "Scifi_Character")
-
-# What classes is the print method defined for?
-showMethods("print")
-```
 
 ## What classes have a print method?
 ```{r What classes have a print method?}
 showMethods("print")
 ```
+
+## Summary
+* Define a simple class
+* Defining methods
+* __Accessor methods__
+* Inheritance
+* Creating specialized data frame and list classes in S4
+* S4 classes in packages
+* Documenting S4 classes
 
 ## Define name accessors for Scifi_Character
 ```{r Define name accessors for Scifi_Character, results='hide'}
@@ -148,12 +164,22 @@ Code iteration        |No accessor                    |Use accessor
 distr::standardMethods("Scifi_Character")
 ```
 
-## Inheritance
-```{r Inheritance}
+## Summary
+* Define a simple class
+* Defining methods
+* Accessor methods
+* __Inheritance__
+* Creating specialized data frame and list classes in S4
+* S4 classes in packages
+* Documenting S4 classes
+
+## Create a child class
+```{r Create a child class}
 setClass("Robot", contains = "Scifi_Character",
          slots = list(designer = "character")
 )
 ```
+
 ## Commander Data
 ```{r Commander Data}
 cmdr_data <- new("Robot",
@@ -184,6 +210,15 @@ setMethod("print", signature(x = "Robot"),
 ```{r Print Commander Data using our new Robot method, results='asis'}
 print(cmdr_data)
 ```
+
+## Summary
+* Define a simple class
+* Defining methods
+* Accessor methods
+* Inheritance
+* __Creating specialized data frame and list classes in S4__
+* S4 classes in packages
+* Documenting S4 classes
 
 ## Create an S4 class for data frames
 S4 advantage: validity checking
@@ -248,6 +283,15 @@ setAs("list", "Scifi_Character_List",
 ```
 
 
+## Summary
+* Define a simple class
+* Defining methods
+* Accessor methods
+* Inheritance
+* Creating specialized data frame and list classes in S4
+* __S4 classes in packages__
+* Documenting S4 classes
+
 ## Organize classes and methods in a package
 * Organize methods by class?
 * Organize methods by generic?
@@ -265,10 +309,17 @@ e.g. to define a generic and a class before a method
     + use @include tag
     + check box in RStudio project options
 
-## Document classes and methods with roxygen2
-Document Scifi_character class
+## Summary
+* Define a simple class
+* Defining methods
+* Accessor methods
+* Inheritance
+* Creating specialized data frame and list classes in S4
+* S4 classes in packages
+* __Documenting S4 classes__
+
+## Document Scifi_character class with roxygen2
 ```{r Document Scifi_character class}
-#### Scifi_character class ####
 #' An S4 class to represent a scifi character
 #' 
 #' @slot name character name
@@ -292,7 +343,7 @@ Use `@describeIn` or `@rdname` tags
 
 ## Summary
 * Define a simple class
-* Define a method
+* Defining methods
 * Accessor methods
 * Inheritance
 * Creating specialized data frame and list classes in S4
