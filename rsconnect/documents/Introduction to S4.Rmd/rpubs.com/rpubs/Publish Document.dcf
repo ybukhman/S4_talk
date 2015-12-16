@@ -1,0 +1,7 @@
+name: Publish Document
+account: rpubs
+server: rpubs.com
+bundleId:
+        https://api.rpubs.com/api/v1/document/135339/475806193c4c4ccab23d6148535e6419
+url: http://rpubs.com/ybukhman/135339
+when: 1450302145.49548

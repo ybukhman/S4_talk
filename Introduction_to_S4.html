@@ -392,9 +392,13 @@ name(mr_hop)
              return(TRUE)
            }
          }
-)
-# Need this because as() does not check validity by default
-setAs(&quot;data.frame&quot;, &quot;Characters_df&quot;,
+)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Define special <code>as</code> function for this class</h2></hgroup><article  id="define-special-as-function-for-this-class">
+
+<p>Need this because <code>as()</code> does not check validity by default</p>
+
+<pre class = 'prettyprint lang-r'>setAs(&quot;data.frame&quot;, &quot;Characters_df&quot;,
       function(from) {
         new(&quot;Characters_df&quot;,from)
       })</pre>
@@ -474,7 +478,7 @@ setAs(&quot;list&quot;, &quot;Scifi_Character_List&quot;,
 <li>Use roxygen2 to generate the <code>Collate</code> field
 
 <ul>
-<li>use <span class="cite">@include</span> tag</li>
+<li>use <span class="cite">@include</span> tag to specify which files must be loaded before the current one</li>
 <li>check box in RStudio project options</li>
 </ul></li>
 </ul>
@@ -491,7 +495,7 @@ setAs(&quot;list&quot;, &quot;Scifi_Character_List&quot;,
 <li><strong>Documenting S4 classes</strong></li>
 </ul>
 
-</article></slide><slide class=''><hgroup><h2>Document Scifi_character class with roxygen2</h2></hgroup><article  id="document-scifi_character-class-with-roxygen2">
+</article></slide><slide class=''><hgroup><h2>Document Scifi_Character class with roxygen2</h2></hgroup><article  id="document-scifi_character-class-with-roxygen2">
 
 <pre class = 'prettyprint lang-r'>#&#39; An S4 class to represent a scifi character
 #&#39; 
@@ -499,22 +503,22 @@ setAs(&quot;list&quot;, &quot;Scifi_Character_List&quot;,
 
 <p>Document the print method</p>
 
-<pre class = 'prettyprint lang-r'>#&#39; Print a Scifi_character object
+<pre class = 'prettyprint lang-r'>#&#39; Print a Scifi_Character object
 #&#39; 
 #&#39; Prints a signle sentense describing the object
 #&#39; 
-#&#39; @param x object of class Scifi_character
+#&#39; @param x object of class Scifi_Character
 #&#39;
-#&#39; @seealso \code{\linkS4class{Scifi_character}}, \code{\link[base]{print}}</pre>
+#&#39; @seealso \code{\linkS4class{Scifi_Character}}, \code{\link[base]{print}}</pre>
 
 </article></slide><slide class=''><hgroup><h2>Document multiple methods together</h2></hgroup><article  id="document-multiple-methods-together">
 
 <ul>
 <li>Document several methods in one help page</li>
 <li>Append method documentation to generic or to class</li>
+<li>Use <code>@describeIn</code> or <code>@rdname</code> tags</li>
+<li>See more in Hadley&#39;s book: <a href='http://r-pkgs.had.co.nz/man.html#dry2' title=''>http://r-pkgs.had.co.nz/man.html#dry2</a></li>
 </ul>
-
-<p>Use <code>@describeIn</code> or <code>@rdname</code> tags</p>
 
 </article></slide><slide class=''><hgroup><h2>Summary</h2></hgroup><article  id="summary-7">
 
